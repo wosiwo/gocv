@@ -9,7 +9,7 @@ import "C"
 import (
 	"unsafe"
 
-	"gocv.io/x/gocv"
+	"github.com/LKKlein/gocv"
 )
 
 // BackgroundSubtractorCNT is a wrapper around the cv::BackgroundSubtractorCNT.

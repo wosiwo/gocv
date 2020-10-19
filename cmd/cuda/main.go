@@ -13,8 +13,8 @@ package main
 import (
 	"fmt"
 
-	"gocv.io/x/gocv"
-	"gocv.io/x/gocv/cuda"
+	"github.com/LKKlein/gocv"
+	"github.com/LKKlein/gocv/cuda"
 )
 
 func main() {

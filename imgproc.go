@@ -509,6 +509,30 @@ func MinAreaRect(points []image.Point) RotatedRect {
 	}
 }
 
+type RotatedRect2f struct {
+	Contour      []image.Point
+	BoundingRect image.Rectangle
+	Center       Point2f
+	Width        float32
+	Height       float32
+	Angle        float64
+}
+
+func MinAreaRectf(points []image.Point) RotatedRect2f {
+	cPoints := toCPoints(points)
+	result := C.MinAreaRect2f(cPoints)
+
+	defer C.Points_Close(result.pts)
+	return RotatedRect2f{
+		Contour:      toPoints(result.pts),
+		BoundingRect: image.Rect(int(result.boundingRect.x), int(result.boundingRect.y), int(result.boundingRect.x)+int(result.boundingRect.width), int(result.boundingRect.y)+int(result.boundingRect.height)),
+		Center:       Point2f{X: result.center.x, Y: result.center.y},
+		Width:        result.size.width,
+		Height:       result.size.height,
+		Angle:        float64(result.angle),
+	}
+}
+
 // FitEllipse Fits an ellipse around a set of 2D points.
 //
 // For further details, please see:

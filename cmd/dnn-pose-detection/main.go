@@ -31,7 +31,7 @@ import (
 	"image/color"
 	"os"
 
-	"gocv.io/x/gocv"
+	"github.com/LKKlein/gocv"
 )
 
 var net *gocv.Net

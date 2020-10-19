@@ -6,7 +6,7 @@ dist: trusty
 language: go
 go:
   - "1.14"
-go_import_path: gocv.io/x/gocv
+go_import_path: github.com/LKKlein/gocv
 
 addons:
   apt:
