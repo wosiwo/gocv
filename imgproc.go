@@ -428,14 +428,14 @@ func BoxPoints(rect RotatedRect, pts *Mat) {
 		height: C.int(rect.BoundingRect.Max.Y - rect.BoundingRect.Min.Y),
 	}
 
-	rCenter := C.struct_Point{
-		x: C.int(rect.Center.X),
-		y: C.int(rect.Center.Y),
+	rCenter := C.struct_Point2f{
+		x: C.float(rect.Center.X),
+		y: C.float(rect.Center.Y),
 	}
 
-	rSize := C.struct_Size{
-		width:  C.int(rect.Width),
-		height: C.int(rect.Height),
+	rSize := C.struct_Size2f{
+		width:  C.float(rect.Width),
+		height: C.float(rect.Height),
 	}
 
 	r := C.struct_RotatedRect{
@@ -463,9 +463,9 @@ func ContourArea(contour []image.Point) float64 {
 type RotatedRect struct {
 	Contour      []image.Point
 	BoundingRect image.Rectangle
-	Center       image.Point
-	Width        int
-	Height       int
+	Center       Point2f
+	Width        float32
+	Height       float32
 	Angle        float64
 }
 
@@ -502,33 +502,9 @@ func MinAreaRect(points []image.Point) RotatedRect {
 	return RotatedRect{
 		Contour:      toPoints(result.pts),
 		BoundingRect: image.Rect(int(result.boundingRect.x), int(result.boundingRect.y), int(result.boundingRect.x)+int(result.boundingRect.width), int(result.boundingRect.y)+int(result.boundingRect.height)),
-		Center:       image.Pt(int(result.center.x), int(result.center.y)),
-		Width:        int(result.size.width),
-		Height:       int(result.size.height),
-		Angle:        float64(result.angle),
-	}
-}
-
-type RotatedRect2f struct {
-	Contour      []image.Point
-	BoundingRect image.Rectangle
-	Center       Point2f
-	Width        float32
-	Height       float32
-	Angle        float64
-}
-
-func MinAreaRectf(points []image.Point) RotatedRect2f {
-	cPoints := toCPoints(points)
-	result := C.MinAreaRect2f(cPoints)
-
-	defer C.Points_Close(result.pts)
-	return RotatedRect2f{
-		Contour:      toPoints(result.pts),
-		BoundingRect: image.Rect(int(result.boundingRect.x), int(result.boundingRect.y), int(result.boundingRect.x)+int(result.boundingRect.width), int(result.boundingRect.y)+int(result.boundingRect.height)),
-		Center:       Point2f{X: result.center.x, Y: result.center.y},
-		Width:        result.size.width,
-		Height:       result.size.height,
+		Center:       Point2f{X: float32(result.center.x), Y: float32(result.center.y)},
+		Width:        float32(result.size.width),
+		Height:       float32(result.size.height),
 		Angle:        float64(result.angle),
 	}
 }
@@ -546,9 +522,9 @@ func FitEllipse(points []image.Point) RotatedRect {
 	return RotatedRect{
 		Contour:      toPoints(cRect.pts),
 		BoundingRect: image.Rect(int(cRect.boundingRect.x), int(cRect.boundingRect.y), int(cRect.boundingRect.x)+int(cRect.boundingRect.width), int(cRect.boundingRect.y)+int(cRect.boundingRect.height)),
-		Center:       image.Pt(int(cRect.center.x), int(cRect.center.y)),
-		Width:        int(cRect.size.width),
-		Height:       int(cRect.size.height),
+		Center:       Point2f{X: float32(cRect.center.x), Y: float32(cRect.center.y)},
+		Width:        float32(cRect.size.width),
+		Height:       float32(cRect.size.height),
 		Angle:        float64(cRect.angle),
 	}
 

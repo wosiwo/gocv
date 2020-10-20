@@ -110,8 +110,8 @@ struct RotatedRect FitEllipse(Points points)
   cv::RotatedRect bRect = cv::fitEllipse(pts);
 
   Rect r = {bRect.boundingRect().x, bRect.boundingRect().y, bRect.boundingRect().width, bRect.boundingRect().height};
-  Point centrpt = {int(lroundf(bRect.center.x)), int(lroundf(bRect.center.y))};
-  Size szsz = {int(lroundf(bRect.size.width)), int(lroundf(bRect.size.height))};
+  Point2f centrpt = {bRect.center.x, bRect.center.y};
+  Size2f szsz = {bRect.size.width, bRect.size.height};
 
   RotatedRect rotRect = {(Contour){rpts, 4}, r, centrpt, szsz, bRect.angle};
   return rotRect;
@@ -248,39 +248,10 @@ struct RotatedRect MinAreaRect(Points points){
 
     cv::Rect bRect = cvrect.boundingRect();
     Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
-    Point centrpt = {int(lroundf(cvrect.center.x)), int(lroundf(cvrect.center.y))};
-    Size szsz = {int(lroundf(cvrect.size.width)), int(lroundf(cvrect.size.height))};
-
-    RotatedRect retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
-    return retrect;
-}
-
-struct RotatedRect2f MinAreaRect2f(Points points){
-    std::vector<cv::Point> pts;
-
-    for (size_t i = 0; i < points.length; i++) {
-        pts.push_back(cv::Point(points.points[i].x, points.points[i].y));
-    }
-
-    cv::RotatedRect cvrect = cv::minAreaRect(pts);
-
-    Point* rpts = new Point[4];
-    cv::Point2f* pts4 = new cv::Point2f[4];
-    cvrect.points(pts4);
-
-    for (size_t j = 0; j < 4; j++) {
-        Point pt = {int(lroundf(pts4[j].x)), int(lroundf(pts4[j].y))};
-        rpts[j] = pt;
-    }
-
-    delete[] pts4;
-
-    cv::Rect bRect = cvrect.boundingRect();
-    Rect r = {bRect.x, bRect.y, bRect.width, bRect.height};
     Point2f centrpt = {cvrect.center.x, cvrect.center.y};
     Size2f szsz = {cvrect.size.width, cvrect.size.height};
 
-    RotatedRect2f retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
+    RotatedRect retrect = {(Contour){rpts, 4}, r, centrpt, szsz, cvrect.angle};
     return retrect;
 }
 
