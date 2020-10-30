@@ -323,6 +323,26 @@ void Mat_DivideFloat(Mat m, float val) {
     *m /= val;
 }
 
+void Mat_AddScalar(Mat m, Scalar value) {
+    cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
+    *m += c_value;
+}
+
+void Mat_SubtractScalar(Mat m, Scalar value) {
+    cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
+    *m -= c_value;
+}
+
+void Mat_MultiplyScalar(Mat m, Scalar value) {
+    cv::Scalar c_value(1/value.val1, 1/value.val2, 1/value.val3, 1/value.val4);
+    *m /= c_value;
+}
+
+void Mat_DivideScalar(Mat m, Scalar value) {
+    cv::Scalar c_value(value.val1, value.val2, value.val3, value.val4);
+    *m /= c_value;
+}
+
 Mat Mat_MultiplyMatrix(Mat x, Mat y) {
     return new cv::Mat((*x) * (*y));
 }

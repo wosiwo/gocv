@@ -734,6 +734,46 @@ func (m *Mat) DivideFloat(val float32) {
 	C.Mat_DivideFloat(m.p, C.float(val))
 }
 
+func (m *Mat) AddScalar(value Scalar) {
+	cValue := C.struct_Scalar{
+		val1: C.double(value.Val1),
+		val2: C.double(value.Val2),
+		val3: C.double(value.Val3),
+		val4: C.double(value.Val4),
+	}
+	C.Mat_AddScalar(m.p, cValue)
+}
+
+func (m *Mat) SubtractScalar(value Scalar) {
+	cValue := C.struct_Scalar{
+		val1: C.double(value.Val1),
+		val2: C.double(value.Val2),
+		val3: C.double(value.Val3),
+		val4: C.double(value.Val4),
+	}
+	C.Mat_SubtractScalar(m.p, cValue)
+}
+
+func (m *Mat) MultiplyScalar(value Scalar) {
+	cValue := C.struct_Scalar{
+		val1: C.double(value.Val1),
+		val2: C.double(value.Val2),
+		val3: C.double(value.Val3),
+		val4: C.double(value.Val4),
+	}
+	C.Mat_MultiplyScalar(m.p, cValue)
+}
+
+func (m *Mat) DivideScalar(value Scalar) {
+	cValue := C.struct_Scalar{
+		val1: C.double(value.Val1),
+		val2: C.double(value.Val2),
+		val3: C.double(value.Val3),
+		val4: C.double(value.Val4),
+	}
+	C.Mat_DivideScalar(m.p, cValue)
+}
+
 // MultiplyMatrix multiplies matrix (m*x)
 func (m *Mat) MultiplyMatrix(x Mat) Mat {
 	return newMat(C.Mat_MultiplyMatrix(m.p, x.p))

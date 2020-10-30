@@ -1622,6 +1622,22 @@ func WarpPerspective(src Mat, dst *Mat, m Mat, sz image.Point) {
 	C.WarpPerspective(src.p, dst.p, m.p, pSize)
 }
 
+// WarpPerspectiveWithParams applies a perspective transformation to an image.
+func WarpPerspectiveWithParams(src Mat, dst *Mat, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA) {
+	pSize := C.struct_Size{
+		width:  C.int(sz.X),
+		height: C.int(sz.Y),
+	}
+
+	bv := C.struct_Scalar{
+		val1: C.double(borderValue.B),
+		val2: C.double(borderValue.G),
+		val3: C.double(borderValue.R),
+		val4: C.double(borderValue.A),
+	}
+	C.WarpPerspectiveWithParams(src.p, dst.p, m.p, pSize, C.int(flags), C.int(borderType), bv)
+}
+
 // Watershed performs a marker-based image segmentation using the watershed algorithm.
 //
 // For further details, please see:
