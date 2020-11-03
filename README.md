@@ -6,7 +6,7 @@
 
 ## 1. API修改
 
-1.1 RotatedRect结构体的修改
+### 1.1 RotatedRect结构体的修改
 
 - before
     ```C
@@ -54,7 +54,7 @@
 
 这其中主要修改 `center` 和 `size` 两个参数的类型，在C++和Python的OpenCV中，`center` 和 `size` 都是支持`float`的，但是在原版gocv中，直接固定为`int`，这样会导致`RotatedRect`相关的操作会出现偏差。
 
-### 相关API修改
+- 相关API修改
 
 ```go
 func BoxPoints(rect RotatedRect, pts *Mat)
@@ -62,13 +62,13 @@ func MinAreaRect(points []image.Point) RotatedRect
 func FitEllipse(points []image.Point) RotatedRect
 ```
 
-1.2 `WarpPerspective`函数参数的修改
+### 1.2 `WarpPerspective`函数参数的修改
 
 C++中`warpPerspective`函数包含7个可选参数，但是在gocv的接口中只给出了4个参数，后3个参数全部固定，因此当后3个参数为其他内容时，会导致计算偏差。  
 
 因此，此处新增一个`WarpPerspectiveWithParams`函数，保留全部7个可调节参数，保证结果的一致性。
 
-### 添加API
+- 添加API
 
 ```go
 func WarpPerspectiveWithParams(src Mat, dst *Mat, m Mat, sz image.Point, flags InterpolationFlags, borderType BorderType, borderValue color.RGBA)
